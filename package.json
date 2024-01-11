@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@projectstorm/react-canvas-core": "^7.0.2",
+    "@projectstorm/react-diagrams": "^7.0.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -39,5 +41,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "autoprefix": "^1.0.1",
+    "file-loader": "^6.2.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1"
   }
 }
