@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DiamondNodeModel3 } from './DiamondNodeModel';
-import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
+import { DefaultLinkModel, DiagramEngine, DiagramModel, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
 import styled from '@emotion/styled';
 import img2 from '../../assets/images/Img2.jpeg'
 
@@ -9,6 +9,8 @@ export interface DiamondNodeWidgetProps {
 	engine: DiagramEngine;
 	size?: number;
 }
+
+
 
 namespace S {
 	export const Port = styled.div`
@@ -30,7 +32,87 @@ namespace S {
  * @author Dylan Vorster
  */
 export class DiamondNodeWidget3 extends React.Component<DiamondNodeWidgetProps> {
+// 	DummyView = () => {
+	
+// 		React.useEffect(() => {	
+// 		  ab()
+		  
+// 	  })
+
+
+// 	  var model = new DiagramModel();
+
+// 	  const link = new DefaultLinkModel()
+// 	  // console.log(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks()))
+// 	  // link.setSourcePort(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks()))
+	  
+// 	  // link.setTargetPort(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks())[0].getTargetPort());
+
+// 	  const links = Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks());
+// 	  const raj = links.map(link => link.getSourcePort());
+
+	  
+
+// 	  const links1 = Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks());
+// 	  const raj1 = links1.map(link => link.getTargetPort());
+
+// 	  // model.addAll(link)
+
+// 	  async function ab() {
+// 		  try {
+
+// 			  for (let index = 0; index < raj.length; index++) {
+// 				  link.setSourcePort(raj[index])
+// 			  }
+	  
+// 			  for (let index = 0; index < raj1.length; index++) {
+// 				  link.setTargetPort(raj1[index])
+// 			  }
+// 			//   console.log(link)
+// 			// this.props.engine.repaintCanvas()
+// 		  	model.addAll(link);
+	
+// 	  //    //5) load model into engine
+// 			 this.props.engine.setModel(model);
+// 			  console.log("success")
+// 		  } catch (error) {
+// 			console.log("failure")
+// 			//   console.log(error)
+// 		  }
+// 	  }
+	  
+	  
+
+// 	  return null
+//   }
 	render() {
+		var model = new DiagramModel();
+
+		const link = new DefaultLinkModel()
+		// console.log(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks()))
+        // link.setSourcePort(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks()))
+        
+        // link.setTargetPort(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks())[0].getTargetPort());
+
+		const links = Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks());
+		const raj = links.map(link => link.getSourcePort());
+
+		
+
+		const links1 = Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks());
+		const raj1 = links1.map(link => link.getTargetPort());
+
+
+
+		for (let index = 0; index < raj.length; index++) {
+			link.setSourcePort(raj[index])
+		}
+
+		for (let index = 0; index < raj1.length; index++) {
+			link.setTargetPort(raj1[index])
+		}
+
+		model.addAll(this.props.node,link);
 		return (
 			<div
 				className={'diamond-node'}
@@ -68,8 +150,17 @@ export class DiamondNodeWidget3 extends React.Component<DiamondNodeWidgetProps> 
         `
 					}}
 				/> */}
-                <div className=' border-[1px] border-black -z-10 p-2'>
+                <div className=' border-[1px] border-black -z-10 p-2'
+				 onClick={()=>{
+					// try {
+					// 	this.props.engine.setModel(model);
+					// 	console.log("success")
+					// } catch (error) {
+					// 	console.log("failure")
+					// }
+				}}>
 					<img src={img2} alt='udshj' className=' -z-10 pointer-events-none' 	></img>
+					{/* <this.DummyView></this.DummyView> */}
 				</div>
 				<PortWidget
 					style={{
@@ -79,7 +170,7 @@ export class DiamondNodeWidget3 extends React.Component<DiamondNodeWidgetProps> 
 						
 					}}
 					className="z-30"
-					port={this.props.node.getPort(PortModelAlignment.LEFT)}
+					port={this.props.node.getPort("in-3")}
 					engine={this.props.engine}
 				>
 					<S.Port />

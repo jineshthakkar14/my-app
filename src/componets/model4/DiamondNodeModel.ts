@@ -1,4 +1,4 @@
-import { NodeModel, NodeModelGenerics, PortModelAlignment } from '@projectstorm/react-diagrams';
+import { DefaultNodeModel, DefaultNodeModelOptions, NodeModel, NodeModelGenerics, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { DiamondPortModel3 } from './DiamondPortModel';
 
 export interface DiamondNodeModelGenerics {
@@ -6,8 +6,8 @@ export interface DiamondNodeModelGenerics {
 }
 
 // this can be further extended for more complicated node types
-export class DiamondNodeModel3 extends NodeModel<NodeModelGenerics & DiamondNodeModelGenerics> {
-    constructor() {
+export class DiamondNodeModel3 extends NodeModel<NodeModelGenerics & DiamondNodeModelGenerics & DefaultNodeModel> {
+    constructor(name?: string,options?: DefaultNodeModelOptions) {
         super({
             type: 'diamond3'
         });
