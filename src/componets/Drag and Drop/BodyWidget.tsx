@@ -14,11 +14,12 @@ import { DemoCanvasWidget } from './DemoCanvasWidget';
 import { DemoButton, DemoWorkspaceWidget } from './DemoWorkspaceWIdget';
 import axios from 'axios';
 import { apis } from '../../services/apis';
-import { DiamondNodeModel } from '../model1/DiamondNodeModel';
-import { AdvancedLinkModel, AdvancedPortModel } from '../../pages/Sam';
+import { SolarNodeModel } from '../model1/DiamondNodeModel';
+import { AdvancedLinkModel, AdvancedPortModel } from '../../pages/Animation';
 import { DiamondNodeModel1 } from '../model2/DiamondNodeModel';
 import { DiamondNodeModel2 } from '../model3/DiamondNodeModel';
 import { DiamondNodeModel3 } from '../model4/DiamondNodeModel';
+import { CustomNodeModel } from '../model/CustomNodeModel';
 
 export interface BodyWidgetProps {
 	app: Application;
@@ -74,10 +75,10 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 				</S.Header>
 				<S.Content className='w-[100vw] justify-center mx-auto '>
 					<TrayWidget>
-						<TrayItemWidget model={{ type: 'Building' }} name="Building" color="rgb(192,255,0)" />
-						<TrayItemWidget model={{ type: 'Solar Panel' }} name="Solar Panel" color="rgb(0,192,255)" />
-						<TrayItemWidget model={{ type: 'Electricity Pole' }} name="Electricity Pole" color="rgb(192,255,0)" />
-						<TrayItemWidget model={{ type: 'Battery' }} name="Battery" color="rgb(0,192,255)" />
+						<TrayItemWidget model={{ type: 'building' }} name="Building" color="rgb(192,255,0)" />
+						<TrayItemWidget model={{ type: 'solarPanel' }} name="Solar Panel" color="rgb(0,192,255)" />
+						<TrayItemWidget model={{ type: 'grid' }} name="Grid" color="rgb(192,255,0)" />
+						<TrayItemWidget model={{ type: 'battery' }} name="Battery" color="rgb(0,192,255)" />
 					</TrayWidget>
 					<S.Layer
                         className="mx-auto bg-slate-600"
@@ -85,67 +86,49 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 							var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
 							var nodesCount = _.keys(this.props.app.getDiagramEngine().getModel().getNodes()).length;
 
-							var node: DiamondNodeModel = null;
-							var node1: DiamondNodeModel1 = null;
-							var node2: DiamondNodeModel2 = null;
-							var node3: DiamondNodeModel3 = null;
-
-							var port2
-							var port1
+							var node: CustomNodeModel = null;
 
 							
-							if (data.type === 'Building') {
-								node = new DiamondNodeModel('Node ' + (nodesCount + 1));
+							if (data.type === 'building') {
+								node = new CustomNodeModel('Node ' + (nodesCount + 1),data.type);
 								node.addPort(new AdvancedPortModel(false,"out"));
-								let x =10
-								if(x>=0){
-									
-								}
 								var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
 								node.setPosition(point);
 								this.props.app.getDiagramEngine().getModel().addNode(node);
 								this.forceUpdate();
 							
 							} 
-							if (data.type === 'Solar Panel') {
-								node1 = new DiamondNodeModel1('Node1 ' + (nodesCount + 1));
-								port1=node1.addPort(new AdvancedPortModel(true,"in-1"));
+							if (data.type === 'solarPanel') {
+								node = new CustomNodeModel('Node1 ' + (nodesCount + 1),data.type);
+								node.addPort(new AdvancedPortModel(true,"in-1"));
 								var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
-								node1.setPosition(point);
+								node.setPosition(point);
 								var link = new AdvancedLinkModel()
-								this.props.app.getDiagramEngine().getModel().addNode(node1);
+								this.props.app.getDiagramEngine().getModel().addNode(node);
 								// link.setSourcePort(port1)
 								
 								this.forceUpdate();
 							}
-							if (data.type === 'Electricity Pole') {
-								node2 = new DiamondNodeModel2('Node2 ' + (nodesCount + 1));
-								port2= node2.addPort(new AdvancedPortModel(false,"in-2"));
+							if (data.type === 'grid') {
+								node = new CustomNodeModel('Node2 ' + (nodesCount + 1),data.type);
+								node.addPort(new AdvancedPortModel(false,"in-2"));
 								var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
-								node2.setPosition(point);
+								node.setPosition(point);
 								// link.setTargetPort(port2)
 								
-								this.props.app.getDiagramEngine().getModel().addNode(node2);
+								this.props.app.getDiagramEngine().getModel().addNode(node);
 								this.forceUpdate();
 							}
-							if (data.type === 'Battery') {
-								node3 = new DiamondNodeModel3('Node2 ' + (nodesCount + 1));
-								node3.addPort(new AdvancedPortModel(false,"in-3"));
+							if (data.type === 'battery') {
+								node = new CustomNodeModel('Node2 ' + (nodesCount + 1),data.type);
+								node.addPort(new AdvancedPortModel(false,"in-3"));
 								var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
-								node3.setPosition(point);
-								this.props.app.getDiagramEngine().getModel().addNode(node3);
+								node.setPosition(point);
+								this.props.app.getDiagramEngine().getModel().addNode(node);
 								this.forceUpdate();
 							}
-							
-
-							console.log(point)
-
-							
-
 
 							this.forceUpdate();
-
-							
 
 							
 						}}
@@ -158,13 +141,13 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 								<DemoButton
 									onClick={() => {
 										action('Serialized Graph')((model2.serialize()));
-										const yz= this.props.app.getDiagramEngine().getModel()
+										const newModel= this.props.app.getDiagramEngine().getModel()
 
-										var str = JSON.stringify(yz.serialize());
+										var str = JSON.stringify(newModel.serialize());
 
 										// console.log(JSON.parse(str))
 								
-										async function raju() {
+										async function pushEngine() {
 											try {
 												const res = await axios({
 												  method:"POST",
@@ -177,15 +160,13 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 												  
 												  
 												})
-												
-												// console.log("Raju",JSON.parse(str))
 												// console.log("Modified values are",res.data)
 											  } catch (error) {
 												console.log(error)
 											  }
 										}
 								
-										raju()
+										pushEngine()
 
 										
 										// Create1()
@@ -207,7 +188,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 						
                         
 					</S.Layer>  
-				</S.Content>
+				</S.Content> 
                
 			</S.Body>
             

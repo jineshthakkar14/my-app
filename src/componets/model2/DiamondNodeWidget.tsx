@@ -251,10 +251,10 @@ const Like = () => {
 		setfirst(Math.ceil(Math.random() * 10) * (Math.round(Math.random()) ? 1 : -1))
 		
 		
-	}, 10000);
+	}, 3000);
 	
 
-	async function raju() {
+	async function modifyPosition() {
 		try {
 			const res = await axios({
 			  method:"POST",
@@ -268,18 +268,13 @@ const Like = () => {
 			  
 			})
 			
-			// console.log("Raju",JSON.parse(str))
 			// console.log("Modified values are",res.data)
 		  } catch (error) {
 			console.log(error)
 		  }
 	}
 
-	raju()
-
-	
-
-	
+	modifyPosition()
 
   return (
 	<div>

@@ -14,7 +14,7 @@ export interface DiamondNodeModelGenerics {
 // }
 
 // this can be further extended for more complicated node types
-export class DiamondNodeModel extends NodeModel<NodeModelGenerics & DiamondNodeModelGenerics & DefaultNodeModel> {
+export class SolarNodeModel extends NodeModel<NodeModelGenerics & DiamondNodeModelGenerics & DefaultNodeModel> {
     // constructor(name: string, color: string);
     constructor(name: string,options?: DefaultNodeModelOptions)
     {

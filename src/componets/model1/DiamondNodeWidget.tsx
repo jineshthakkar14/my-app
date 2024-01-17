@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DiamondNodeModel } from './DiamondNodeModel';
+import { SolarNodeModel } from './DiamondNodeModel';
 import {  DefaultLinkModel, DefaultNodeModel, DiagramEngine, DiagramModel, LinkLayerModel, NodeWidget, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
 import styled from '@emotion/styled';
 import buliding from '../../assets/images/Bulding.jpeg'
@@ -10,11 +10,11 @@ import { serialize } from 'v8';
 import { useDispatch } from 'react-redux';
 import { setPosX } from '../../slices/solarSlice';
 import { Application } from '../../Application';
-import { AdvancedLinkModel } from '../../pages/Sam';
+import { AdvancedLinkModel } from '../../pages/Animation';
 
 
 export interface DiamondNodeWidgetProps {
-	node: DiamondNodeModel;
+	node: SolarNodeModel;
 	engine: DiagramEngine;
 	size?: number;
 }

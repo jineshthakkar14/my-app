@@ -1,5 +1,5 @@
 import { DiamondNodeWidget } from './DiamondNodeWidget';
-import { DiamondNodeModel } from './DiamondNodeModel';
+import { SolarNodeModel } from './DiamondNodeModel';
 import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import { setPosY } from '../../slices/solarSlice';
 import { Application } from '../../Application';
 
-export class DiamondNodeFactory extends AbstractReactFactory<DiamondNodeModel, DiagramEngine> {
+export class DiamondNodeFactory extends AbstractReactFactory<SolarNodeModel, DiagramEngine> {
+	number
 	constructor() {
 		super('diamond');
 	}
@@ -21,6 +22,6 @@ export class DiamondNodeFactory extends AbstractReactFactory<DiamondNodeModel, D
 	}
 
 	generateModel(event) {
-		return new DiamondNodeModel("Diamond");
+		return new SolarNodeModel("Diamond");
 	}
 }
