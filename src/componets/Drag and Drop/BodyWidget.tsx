@@ -205,25 +205,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
                     // console.log(JSON.parse(str))
 
-                    async function pushEngine() {
-                      try {
-                        const res = await axios({
-                          method: "POST",
-                          url: apis.MODIFY_DB_API,
-                          data: {
-                            links: str,
-                          },
-                          withCredentials: true,
-                        });
-                        // console.log("Modified values are",res.data)
-                      } catch (error) {
-                        console.log(error);
-                      }
-                    }
-
-                    pushEngine();
-
-                    // Create1()
                   }}
                 >
                   Download State

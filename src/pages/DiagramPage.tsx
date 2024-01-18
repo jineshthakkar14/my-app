@@ -10,7 +10,7 @@ export interface BodyWidgetProps1 {
 }
 
 
-export class Page2 extends React.Component<any,BodyWidgetProps1> {
+export class DiagramPage extends React.Component<any,BodyWidgetProps1> {
   
       render(){
 

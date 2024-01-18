@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 import { Route, Routes } from 'react-router-dom';
-import { Page1 } from './pages/Page1';
-import { Page2 } from './pages/Page2';
+import { StartPage } from './pages/StartPage';
+import { DiagramPage } from './pages/DiagramPage';
 import Test from './pages/Test';
 // import {Test} from './pages/Test';
 
@@ -17,8 +17,8 @@ function App() {
     <div >
       
       <Routes>
-        <Route path='/' element={<Page1></Page1>}></Route>
-        <Route path='/diagram' element={<Page2></Page2>}></Route>
+        <Route path='/' element={<StartPage></StartPage>}></Route>
+        <Route path='/diagram' element={<DiagramPage></DiagramPage>}></Route>
       </Routes>
       {/* <div className='h-[100vh]'>
         <Test></Test>
