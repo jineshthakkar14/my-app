@@ -33,10 +33,6 @@ export interface CustomNodeWidgetProps {
   type: CustomType;
 }
 
-export interface BodyWidgetProps {
-  app: Application;
-}
-
 namespace S {
   export const Port = styled.div`
     width: 16px;
@@ -57,7 +53,7 @@ namespace S {
  */
 
 export class CustomNodeWidget extends React.Component<
-  CustomNodeWidgetProps & BodyWidgetProps
+  CustomNodeWidgetProps
 > {
   DummyView = () => {
     const [x, setX] = React.useState(null);

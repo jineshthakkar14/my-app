@@ -18,10 +18,8 @@ export class CustomNodeFactory extends AbstractReactFactory<CustomNodeModel, Dia
 
 	generateReactWidget(event): JSX.Element {
 
-		const xyz = new Application()
-
 		// console.log(this.engine)
-		return <CustomNodeWidget engine={this.engine} size={50} node={event.model} app={xyz} type={this.type} />;
+		return <CustomNodeWidget engine={this.engine} size={50} node={event.model} type={this.type} />;
 	}
 
 	generateModel(event) {

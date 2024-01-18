@@ -59,6 +59,8 @@ const JsonFileUploader: React.FC = () => {
 
         // const model = getDiagramEngine().getModel()
 
+      
+
         console.log(model)
 
         

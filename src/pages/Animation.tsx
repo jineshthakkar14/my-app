@@ -1,6 +1,4 @@
 import createEngine, {
-	DiagramModel,
-	DefaultNodeModel,
 	DefaultPortModel,
 	DefaultLinkFactory,
 	DefaultLinkModel
