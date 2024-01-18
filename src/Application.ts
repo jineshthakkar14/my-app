@@ -13,6 +13,7 @@ import { CustomPortModel } from "./componets/model/CustomPortModel";
 import { CustomNodeFactory } from "./componets/model/CustomNodeFactory";
 import { CustomType } from "./componets/model/CustomType";
 import { CustomNodeModel } from "./componets/model/CustomNodeModel";
+import { getDiagramEngine,getActiveModel } from "./utils/DiagramUtil";
 
 
 
@@ -24,7 +25,7 @@ export class Application extends Component {
 
   constructor(props?: any) {
     super(props);
-    this.diagramEngine = SRD.default();
+    this.diagramEngine = SRD.default()
     this.newModel();
     this.startRandomNumberGeneration();
   }
@@ -70,104 +71,112 @@ export class Application extends Component {
       this.diagramEngine.getLinkFactories().registerFactory(new AdvancedLinkFactory());
     });
 
-    this.activeModel = new SRD.DiagramModel();
+    this.activeModel = getActiveModel();
+
+    this.diagramEngine = getDiagramEngine();
+
+
+    // this.activeModel
+
+    
+
 
     //3-A) create a default node
-    var node1 = new CustomNodeModel("building","building");
-    // var port1 = node1.addPort(new DiamondPortModel(PortModelAlignment.RIGHT))
-    let port1 = node1.addPort(new AdvancedPortModel(false, "out"));
-    node1.setPosition(100, 150);
+    // var node1 = new CustomNodeModel("building","building");
+    // // var port1 = node1.addPort(new DiamondPortModel(PortModelAlignment.RIGHT))
+    // let port1 = node1.addPort(new AdvancedPortModel(false, "out"));
+    // node1.setPosition(100, 150);
 
-    var node2 = new CustomNodeModel("solarPanel",'solarPanel');
-    var port2 = node2.addPort(new AdvancedPortModel(true, "in-1"));
-    // var port2 = node2.addPort(new DiamondPortModel(PortModelAlignment.RIGHT))
+    // var node2 = new CustomNodeModel("solarPanel",'solarPanel');
+    // var port2 = node2.addPort(new AdvancedPortModel(true, "in-1"));
+    // // var port2 = node2.addPort(new DiamondPortModel(PortModelAlignment.RIGHT))
 
-    node2.setPosition(150, 500);
+    // node2.setPosition(150, 500);
 
-    //  console.log(port2)
+    // //  console.log(port2)
 
-    var node3 = new CustomNodeModel("grid",'grid');
-    //  var port3 = node3.addInPort('In');
-    var port3 = node3.addPort(new AdvancedPortModel(false, "in-2"));
+    // var node3 = new CustomNodeModel("grid",'grid');
+    // //  var port3 = node3.addInPort('In');
+    // var port3 = node3.addPort(new AdvancedPortModel(false, "in-2"));
 
-    node3.setPosition(700, 400);
+    // node3.setPosition(700, 400);
 
-    var node4 = new CustomNodeModel("battery","battery");
-    var port4 = node4.addPort(new AdvancedPortModel(false, "in-3"));
+    // var node4 = new CustomNodeModel("battery","battery");
+    // var port4 = node4.addPort(new AdvancedPortModel(false, "in-3"));
 
-    //  var port4 = node4.addOutPort('Out');
-    node4.setPosition(600, 100);
+    // //  var port4 = node4.addOutPort('Out');
+    // node4.setPosition(600, 100);
 
-    this.activeModel.addAll(node1, node2, node3, node4);
-    var link = new AdvancedLinkModel();
+    // this.activeModel.addAll(node1, node2);
+    // var link = new AdvancedLinkModel();
 
-    const actualRandomValue = randomValue
+    // const actualRandomValue = randomValue
 
-    async function modifyPosition() {
-      try {
-        const res = await axios({
-          method:"POST",
-          url:apis.MODIFY_DB_API,
-          data:{
+    // async function modifyPosition() {
+    //   try {
+    //     const res = await axios({
+    //       method:"POST",
+    //       url:apis.MODIFY_DB_API,
+    //       data:{
           
-          "PositionX":actualRandomValue
-          },
-          withCredentials:true,
+    //       "PositionX":actualRandomValue
+    //       },
+    //       withCredentials:true,
           
           
-        })
+    //     })
         
-        // console.log("Modified values are",res.data)
-        } catch (error) {
-        console.log(error)
-        }
+    //     // console.log("Modified values are",res.data)
+    //     } catch (error) {
+    //     console.log(error)
+    //     }
 
-    }
+    // }
       
-      modifyPosition()
+    //   modifyPosition()
    
 
-    // console.log("Random Value in newModel:", actualRandomValue);
-    if(actualRandomValue>0){
-      link.setSourcePort(port2)
-      link.setTargetPort(port3)
+    // // console.log("Random Value in newModel:", actualRandomValue);
+    // if(actualRandomValue>0){
+    //   link.setSourcePort(port2)
+    //   link.setTargetPort(port3)
      
-    }
+    // }
 
-    else if(actualRandomValue<0){
-      link.setSourcePort(port3)
-      link.setTargetPort(port2)
-    }
+    // else if(actualRandomValue<0){
+    //   link.setSourcePort(port3)
+    //   link.setTargetPort(port2)
+    // }
+    // // this.activeModel.addLink(link)
+
+    
+    
+
     // this.activeModel.addLink(link)
-
-    
-    
-
-    this.activeModel.addLink(link)
 
     this.diagramEngine.setModel(this.activeModel);
 
     // this.forceUpdate();
 
-    const model = this.activeModel;
-    const engine = this.diagramEngine;
+    // const model = this.activeModel;
+    // const engine = this.diagramEngine;
 
-    async function Create1() {
-      try {
-        const res = await axios({
-          method: "GET",
-          url: apis.GETALLVALUES_API,
-          withCredentials: true,
-        });
+    // async function Create1() {
+    //   try {
+    //     const res = await axios({
+    //       method: "GET",
+    //       url: apis.GETALLVALUES_API,
+    //       withCredentials: true,
+    //     });
 
-        // console.log(res.data.ans.positionX);
+    //     // console.log(res.data.ans.positionX);
   
-        model.deserializeModel(JSON.parse(res.data.ans.links), engine);
+        // model.deserializeModel(JSON.parse(res.data.ans.links), engine);
         
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
     
    
     // Create1();

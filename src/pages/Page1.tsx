@@ -4,6 +4,7 @@ import { apis } from '../services/apis'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '..'
+import JsonFileUploader from '../componets/JsonFileUploader'
 // import { Sam } from './Sam'
 
 export const Page1 = () => {
@@ -23,12 +24,14 @@ export const Page1 = () => {
         }
       }
   return (
-    <div className='flex h-[100vh] justify-center items-center'>
+    <div className='flex h-[100vh] justify-center items-center gap-3 flex-col'>
         <NavLink to="/diagram" onClick={Create} >
             <button className='button-24' >
                 Create New File
             </button>
+            
         </NavLink>
+        <JsonFileUploader></JsonFileUploader>
     </div>
   )
 }
