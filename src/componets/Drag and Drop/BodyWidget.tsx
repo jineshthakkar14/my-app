@@ -13,11 +13,9 @@ import { DemoCanvasWidget } from "./DemoCanvasWidget";
 import { DemoButton, DemoWorkspaceWidget } from "./DemoWorkspaceWIdget";
 import axios from "axios";
 import { apis } from "../../services/apis";
-import { SolarNodeModel } from "../model1/DiamondNodeModel";
+
 import { AdvancedLinkModel, AdvancedPortModel } from "../../pages/Animation";
-import { DiamondNodeModel1 } from "../model2/DiamondNodeModel";
-import { DiamondNodeModel2 } from "../model3/DiamondNodeModel";
-import { DiamondNodeModel3 } from "../model4/DiamondNodeModel";
+
 import { CustomNodeModel } from "../model/CustomNodeModel";
 
 export interface BodyWidgetProps {
@@ -228,7 +226,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                     // Create1()
                   }}
                 >
-                  Save
+                  Download State
                 </DemoButton>
               }
             >
