@@ -1,10 +1,11 @@
-import createEngine, {
+import {
+	
 	DefaultPortModel,
 	DefaultLinkFactory,
 	DefaultLinkModel
 } from '@projectstorm/react-diagrams';
 import * as React from 'react';
-import { CanvasWidget } from '@projectstorm/react-canvas-core';
+
 
 
 export class AdvancedLinkModel extends DefaultLinkModel {

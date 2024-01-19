@@ -3,16 +3,13 @@ import * as _ from "lodash";
 import { TrayWidget } from "./TragWidget";
 import { Application } from "../../Application";
 import { TrayItemWidget } from "./TragItemWidget";
-import { DefaultNodeModel, DiagramModel } from "@projectstorm/react-diagrams";
-import { Action, CanvasWidget } from "@projectstorm/react-canvas-core";
+import { DiagramModel } from "@projectstorm/react-diagrams";
+import {  CanvasWidget } from "@projectstorm/react-canvas-core";
 import { action } from "@storybook/addon-actions";
-import * as beautify from "json-beautify";
 
 import styled from "@emotion/styled";
 import { DemoCanvasWidget } from "./DemoCanvasWidget";
 import { DemoButton, DemoWorkspaceWidget } from "./DemoWorkspaceWIdget";
-import axios from "axios";
-import { apis } from "../../services/apis";
 
 import { AdvancedLinkModel, AdvancedPortModel } from "../../pages/Animation";
 
@@ -175,9 +172,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
                     var str = JSON.stringify(newModel.serialize());
 					          const data = newModel.serialize()
-
-                    // Your JSON data
-                    // const data = { key: "str" };
 
                     // Convert JSON data to a string
                     const jsonData = JSON.stringify(data, null, 2);

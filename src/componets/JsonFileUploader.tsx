@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getActiveModel, getDiagramEngine } from '../utils/DiagramUtil';
 import { useNavigate } from 'react-router-dom';
-import { AdvancedLinkFactory } from '../pages/Animation';
+import { AdvancedLinkFactory, AdvancedLinkModel } from '../pages/Animation';
 import { CustomType } from './model/CustomType';
 import { CustomPortFactory } from './model/CustomPortFactory';
 import { CustomPortModel } from './model/CustomPortModel';
@@ -55,19 +55,10 @@ const JsonFileUploader: React.FC = () => {
               getDiagramEngine().getLinkFactories().registerFactory(new AdvancedLinkFactory());
           });
         
-        const model = getActiveModel().deserializeModel(JSON.parse(jsonContent),getDiagramEngine())
-
-        // const model = getDiagramEngine().getModel()
-
-      
-
-        console.log(model)
-
-        
-        
-        //   console.log(getDiagramEngine())
+          getActiveModel().deserializeModel(JSON.parse(jsonContent),getDiagramEngine())
           
           navigate("/diagram")
+
 
         }
       };

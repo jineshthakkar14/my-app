@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Application } from '../Application';
 import { BodyWidget } from '../componets/Drag and Drop/BodyWidget';
-import { RootState } from '..';
-import { useSelector } from 'react-redux';
 
 
 export interface BodyWidgetProps1 {
