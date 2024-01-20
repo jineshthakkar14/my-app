@@ -11,7 +11,7 @@ import styled from "@emotion/styled";
 import { DemoCanvasWidget } from "./DemoCanvasWidget";
 import { DemoButton, DemoWorkspaceWidget } from "./DemoWorkspaceWIdget";
 
-import { AdvancedLinkModel, AdvancedPortModel } from "../../pages/Animation";
+import { AdvancedLinkModel, AdvancedPortModel, BatteryPortModel, BuildingPortModel, GridPortModel, SolarPortModel } from "../../pages/Animation";
 
 import { CustomNodeModel } from "../model/CustomNodeModel";
 
@@ -51,9 +51,6 @@ namespace S {
 
 export class BodyWidget extends React.Component<BodyWidgetProps> {
   render() {
-    var str = JSON.stringify(
-      this.props.app.getDiagramEngine().getModel().serialize()
-    );
 
     var model2 = new DiagramModel();
 
@@ -97,12 +94,14 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
               var node: CustomNodeModel = null;
 
+              const port6 =  new SolarPortModel(false,"in-1")
+
               if (data.type === "building") {
                 node = new CustomNodeModel(
                   "Node " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new AdvancedPortModel(false, "out"));
+                node.addPort(new BuildingPortModel(false, "out"));
                 var point = this.props.app
                   .getDiagramEngine()
                   .getRelativeMousePoint(event);
@@ -115,7 +114,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   "Node1 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new AdvancedPortModel(true, "in-1"));
+                node.addPort(new SolarPortModel(true,"in-1"));
                 var point = this.props.app
                   .getDiagramEngine()
                   .getRelativeMousePoint(event);
@@ -131,7 +130,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   "Node2 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new AdvancedPortModel(false, "in-2"));
+                node.addPort(new GridPortModel(false, "in-2"));
                 var point = this.props.app
                   .getDiagramEngine()
                   .getRelativeMousePoint(event);
@@ -146,7 +145,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   "Node2 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new AdvancedPortModel(false, "in-3"));
+                node.addPort(new BatteryPortModel(false, "in-3"));
                 var point = this.props.app
                   .getDiagramEngine()
                   .getRelativeMousePoint(event);

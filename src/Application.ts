@@ -85,7 +85,7 @@ export class Application extends Component {
     const actualRandomValue = randomValue !== undefined ? randomValue : 0;
 
     if(actualRandomValue>0){
-      reverseConnections();
+      // reverseConnections();
     }
  
     this.diagramEngine.setModel(this.activeModel);

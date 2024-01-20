@@ -23,6 +23,31 @@ export class AdvancedPortModel extends DefaultPortModel {
 	}
 }
 
+export class SolarPortModel extends AdvancedPortModel {
+	canLinkToPort(port: DefaultPortModel): boolean {
+	  return port instanceof GridPortModel || port instanceof BatteryPortModel;
+	}
+  }
+
+  export class BatteryPortModel extends AdvancedPortModel {
+	canLinkToPort(port: DefaultPortModel): boolean {
+	  return port instanceof BuildingPortModel || port instanceof SolarPortModel;
+	}
+  }
+  
+  export class GridPortModel extends AdvancedPortModel {
+	canLinkToPort(port: DefaultPortModel): boolean {
+	  return port instanceof SolarPortModel || port instanceof BuildingPortModel;
+	}
+  }
+
+  export class BuildingPortModel extends AdvancedPortModel {
+	canLinkToPort(port: DefaultPortModel): boolean {
+		return port instanceof GridPortModel || port instanceof BatteryPortModel;
+	}
+  }
+  
+
 export class AdvancedLinkSegment extends React.Component<{ model: AdvancedLinkModel; path: string }> {
 	path: SVGPathElement;
 	circle: SVGElement;
