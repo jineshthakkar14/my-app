@@ -65,9 +65,9 @@ export class SolarPortModel extends AdvancedPortModel {
 
 	  React.useEffect(() => {
 
-		if(buildingValue===0 && model.getSourcePort().getName()==="out"){
+		if((solarValue - buildingValue) > 0 && model.getSourcePort().getName()==="out"){
 			setRadius(0)
-			setStrokeWidth(0)
+			setStrokeWidth(2)
 		}else if(solarValue===0 && model.getSourcePort().getName()==="in-1"){
 			setRadius(0)
 			setStrokeWidth(2)
