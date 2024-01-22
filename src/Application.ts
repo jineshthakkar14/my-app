@@ -10,10 +10,6 @@ import { CustomNodeFactory } from "./componets/model/CustomNodeFactory";
 import { CustomType } from "./componets/model/CustomType";
 import { getDiagramEngine,getActiveModel } from "./utils/DiagramUtil";
 
-
-
-
-
 export class Application extends Component {
   protected activeModel: SRD.DiagramModel;
   protected diagramEngine: SRD.DiagramEngine;
@@ -25,7 +21,7 @@ export class Application extends Component {
     this.startRandomNumberGeneration();
   }
 
-  private startRandomNumberGeneration() {
+  public startRandomNumberGeneration() {
     const generateRandomValue = () => {
       const randomValue = this.getRandomNumber(-10, 10);
       this.newModel(randomValue);
@@ -33,7 +29,7 @@ export class Application extends Component {
       // Use setTimeout to delay the next iteration
       setTimeout(generateRandomValue, 3000);
     };
-  
+    
     // Call the function initially
     generateRandomValue();
   }

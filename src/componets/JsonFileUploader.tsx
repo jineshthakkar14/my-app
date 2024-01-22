@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getActiveModel, getDiagramEngine } from '../utils/DiagramUtil';
 import { useNavigate } from 'react-router-dom';
-import { AdvancedLinkFactory, AdvancedLinkModel } from '../pages/Animation';
+import { AdvancedLinkFactory } from '../pages/Animation';
 import { CustomType } from './model/CustomType';
 import { CustomPortFactory } from './model/CustomPortFactory';
 import { CustomPortModel } from './model/CustomPortModel';
@@ -19,19 +19,14 @@ const JsonFileUploader: React.FC = () => {
   };
 
   const navigate = useNavigate()
-//   console.log(getActiveModel().getModels())
-
 
   const handleUpload = () => {
     if (selectedFile) {
-      // Assuming you want to read the JSON content
+
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target) {
-            // debugger
           const jsonContent = event.target.result as string;
-          // Do something with the JSON content
-          console.log(JSON.parse(jsonContent));
 
         const customTypes: CustomType[] = [
             "building",
@@ -63,13 +58,12 @@ const JsonFileUploader: React.FC = () => {
         }
       };
 
-      // Read the selected file as text
       reader.readAsText(selectedFile);
     }
   };
 
   return (
-    <div className='flex flex-col   gap-3'>
+    <div className='flex flex-col gap-3'>
       <input type="file" onChange={handleFileChange} className='mx-auto' />
       <button onClick={handleUpload} className='button-24'>Upload JSON</button>
     </div>

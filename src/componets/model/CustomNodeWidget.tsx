@@ -1,12 +1,7 @@
 import * as React from "react";
 import { CustomNodeModel } from "./CustomNodeModel";
 import {
-  DefaultLinkModel,
-  DefaultNodeModel,
   DiagramEngine,
-  DiagramModel,
-  LinkLayerModel,
-  NodeWidget,
   PortModelAlignment,
   PortWidget,
 } from "@projectstorm/react-diagrams";
@@ -18,13 +13,10 @@ import battery from "../../assets/images/Img2.jpeg";
 
 import axios from "axios";
 import { apis } from "../../services/apis";
-import { json } from "stream/consumers";
-import { serialize } from "v8";
-import { useDispatch } from "react-redux";
-import { setPosX } from "../../slices/solarSlice";
-import { Application } from "../../Application";
-import { AdvancedLinkModel } from "../../pages/Animation";
 import { CustomType } from "./CustomType";
+import { useDispatch, useSelector } from "react-redux";
+import { setBuildingEnergy, setLoading, setSolarEnergy } from "../../slices/solarSlice";
+import { RootState } from "../..";
 
 export interface CustomNodeWidgetProps {
   node: CustomNodeModel;
@@ -52,114 +44,48 @@ namespace S {
  * @author Dylan Vorster
  */
 
-export class CustomNodeWidget extends React.Component<
-  CustomNodeWidgetProps
-> {
-  DummyView = () => {
-    const [x, setX] = React.useState(null);
-    const [y, setY] = React.useState(null);
+export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
 
-    const [setLoading] = React.useState(false);
+  const dispatch = useDispatch()
+  const [randomValue, setRandomValue] = React.useState<number>(0);
 
-    // const links = Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks());
-    // const raj = links.map(link => link.getSourcePort());
+  const [randomValue1, setRandomValue1] = React.useState<number>(0);
+  const loading = useSelector((state:RootState) => state.solar.loading);
 
-    // console.log(raj)
-    const dispatch = useDispatch();
-    var z = this.props.node.getX();
+  React.useEffect(() => {  
+    const intervalId = setInterval(() => {
+      
+      const newValue1 = Math.floor(Math.random() * 21);
 
-    // dispatch(setPosX(z))5
+      setRandomValue(newValue1);
+      
+      dispatch(setSolarEnergy(newValue1));
+      
+    }, 15000);
+    return () => clearInterval(intervalId); 
+  }, [dispatch]);
 
-    var xy = this.props.node.serialize().ports[3];
-    // async function raju() {
-    // 	try {
-    // 		const res = await axios({
-    // 		  method:"POST",
-    // 		  url:apis.MODIFY_DB_API,
-    // 		  data:{
-    // 			"PositionX":x,
-    // 			"PositionY":y,
-    // 			// "links":xy
-    // 		  },
-    // 		  withCredentials:true,
+  React.useEffect(() => {
+    const intervalId1 = setInterval(() => {
+      const newValue2 = Math.floor(Math.random() * 21);
 
-    // 		})
+      setRandomValue1(newValue2);
+      
+      dispatch(setBuildingEnergy(newValue2));
+    }, 15000);
 
-    // 		// console.log("Modified values are",res.data)
-    // 	  } catch (error) {
-    // 		console.log(error)
-    // 	  }
-    // }
+    return () => clearInterval(intervalId1);
+  }, [dispatch]);
 
-    var model = new DiagramModel();
-
-    const link = new DefaultLinkModel();
-    // console.log(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks()))
-    // link.setSourcePort(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks()))
-
-    // link.setTargetPort(Object.values(this.props.node.getPort(this.props.node.getPorts().right.getName()).getLinks())[0].getTargetPort());
-
-    const links = Object.values(
-      this.props.node
-        .getPort(this.props.node.getPorts().right.getName())
-        .getLinks()
-    );
-    const raj = links.map((link) => link.getSourcePort());
-
-    const links1 = Object.values(
-      this.props.node
-        .getPort(this.props.node.getPorts().right.getName())
-        .getLinks()
-    );
-    const raj1 = links1.map((link) => link.getTargetPort());
-
-    // model.addAll(link)
-    for (let index = 0; index < raj.length; index++) {
-      link.setSourcePort(raj[index]);
-    }
-
-    for (let index = 0; index < raj1.length; index++) {
-      link.setTargetPort(raj1[index]);
-    }
-    // console.log(link)
-
-    // console.log(this.props.engine.setModel(model))
-
-    // model.addLink(link)
-    // model.addAll(this.props.node,link);
-
-    async function ab() {
-      try {
-        console.log("success");
-      } catch (error) {
-        // console.log(error)
-        console.log("failure");
-      }
-    }
-
-    React.useEffect(() => {
-      setX(this.props.node.getX());
-      setY(this.props.node.getY());
-      // raju()
-    });
-
-    // console.log(this.props.node.serialize())
-
-    console.log();
-
-    // console.log(x instanceof DiagramEngine )
-
-    return null;
-  };
-
-  render() {
+	const solarValue = useSelector((state:RootState) => state.solar.solarEnergy);
+	const buildingValue = useSelector((state:RootState) => state.solar.buildingEnergy);
 
     const getPortName = (type:CustomType,node:CustomNodeModel) => {
 		if(type==="building"){
 			return node.getPort("out")
 		}
 		if(type==="solarPanel"){
-			return node.getPort("in-1")
+			return node.getPort("in-1") || node.getPort(PortModelAlignment.BOTTOM)
 		}
 		if(type==="battery"){
 			return node.getPort("in-3")
@@ -171,31 +97,31 @@ export class CustomNodeWidget extends React.Component<
 	};
 
   const getPosition =()=>{
-    if(this.props.type==="building"){
+    if(props.type==="building"){
 			return {
-        top: this.props.size + 25,
+        top: props.size + 25,
         right: -8,
         position: "absolute",
       }
 		}
-		if(this.props.type==="solarPanel"){
+		if(props.type==="solarPanel"){
 			return {
-        top: this.props.size-50,
+        top: props.size-50,
         right: -8,
         position: 'absolute'
       }
 		}
-		if(this.props.type==="grid"){
+		if(props.type==="grid"){
 			return {
-        top: this.props.size ,
+        top: props.size ,
         left: -10,
         position: 'absolute'
       }
 		}
-		if(this.props.type==="battery"){
+		if(props.type==="battery"){
 			return {
-        bottom: this.props.size-50 ,
-        left: -10,
+        bottom: props.size-40 ,
+        left: -8,
         position: 'absolute',
         
       }
@@ -206,25 +132,16 @@ export class CustomNodeWidget extends React.Component<
       <div
         style={{
           position: "relative",
-          // width: this.props.size,
-          // height: this.props.size
+          width: 200,
+          height: 180
         }}
       >
         <div
-          className="relative border-[1px] border-black z-10 p-2 w-fit h-fit bg-slate-50"
-          onClick={() => {
-            // try {
-            // 	this.props.engine.setModel(model);
-            // 	console.log("success")
-            // } catch (error) {
-            // 	console.log("failure")
-            // }
-          }}
-        >
+          className="relative border-[1px] border-black z-10 p-2 w-fit h-fit bg-slate-50">
           <div className=" text-black "></div>
-          {this.props.type === "solarPanel" && (
+          {props.type === "solarPanel" && (
             <div>
-              <Like></Like>
+              {solarValue}
               <img
                 src={solar}
                 alt="udshj"
@@ -232,37 +149,42 @@ export class CustomNodeWidget extends React.Component<
               ></img>
             </div>
           )}
-          {this.props.type === "building" && (
-            <img
-              src={buliding}
-              alt="udshj"
-              className="pointer-events-none z-20"
-            ></img>
+          {props.type === "building" && (
+            <div>
+               {
+                loading?(<div>
+                  <div>Loading...</div>
+                </div>):(<div>{buildingValue}</div>)
+              }
+              <img
+                src={buliding}
+                alt="udshj"
+                className="pointer-events-none z-20"
+              ></img>
+            </div>
           )}
-          {this.props.type === "battery" && (
+          {props.type === "battery" && (
             <img
               src={battery}
               alt="udshj"
               className="pointer-events-none z-20"
             ></img>
           )}
-          {this.props.type === "grid" && (
+          {props.type === "grid" && (
             <img
               src={grid}
               alt="udshj"
               className="pointer-events-none z-20"
             ></img>
           )}
-
-          <this.DummyView />
         </div>
 
         {/* {buliding} */}
         <PortWidget
           style={getPosition()}
           // className="z-30"
-          port={getPortName(this.props.type,this.props.node)}
-          engine={this.props.engine}
+          port={getPortName(props.type,props.node)}
+          engine={props.engine}
         >
           <S.Port
             onClick={() => {
@@ -278,38 +200,7 @@ export class CustomNodeWidget extends React.Component<
       </div>
     );
   }
-}
 
-
-const Like = () => {
-	const [first, setfirst] = React.useState(0)
-	
-	
-
-  async function Create1() {
-    try {
-      const res = await axios({
-        method: "GET",
-        url: apis.GETALLVALUES_API,
-        withCredentials: true,
-      });
-
-      console.log(res.data.ans.positionX);
-      setfirst(res.data.ans.positionX)
-      
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
- React.useEffect(() => {
-    Create1()
- })
  
+  
 
-  return (
-	<div>
-		{first}
-	</div>
-  )
-}

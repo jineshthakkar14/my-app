@@ -5,7 +5,9 @@ import {
 	DefaultLinkModel
 } from '@projectstorm/react-diagrams';
 import * as React from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '..';
+import { setLoading } from '../slices/solarSlice';
 
 
 export class AdvancedLinkModel extends DefaultLinkModel {
@@ -48,73 +50,101 @@ export class SolarPortModel extends AdvancedPortModel {
   }
   
 
-export class AdvancedLinkSegment extends React.Component<{ model: AdvancedLinkModel; path: string }> {
-	path: SVGPathElement;
-	circle: SVGElement;
-	callback: () => any;
-	percent: number;
-	handle: any;
-	mounted: boolean;
+  export const AdvancedLinkSegment = ({ model, path }) => {
+	const pathRef = React.useRef(null);
+	const circleRef = React.useRef(null);
+	const percentRef = React.useRef(0);
+	const animationFrameIdRef = React.useRef(null);
+	const dispatch  = useDispatch()
+  
+	const solarValue = useSelector((state:RootState) => state.solar.solarEnergy);
+	const buildingValue = useSelector((state:RootState) => state.solar.buildingEnergy);
+	const [radius, setRadius] = React.useState(0)
+	const [strokeWidth, setStrokeWidth] = React.useState(0)
 
-	constructor(props) {
-		super(props);
-		this.percent = 0;
-	}
 
-	componentDidMount() {
-		this.mounted = true;
-		this.callback = () => {
-			if (!this.circle || !this.path) {
-				return;
+	  React.useEffect(() => {
+
+		if(buildingValue===0 && model.getSourcePort().getName()==="out"){
+			setRadius(0)
+			setStrokeWidth(0)
+		}else if(solarValue===0 && model.getSourcePort().getName()==="in-1"){
+			setRadius(0)
+			setStrokeWidth(2)
+		}else{
+			setRadius(5)
+			setStrokeWidth(2)
+		}
+	  }, [solarValue, buildingValue, model.getSourcePort().getName()]);
+
+	  const targetPort = model.getTargetPort();
+	  const targetPortName = targetPort ? targetPort.getName() : null;
+	 
+	
+	const animate = () => {
+		if (!circleRef.current || !pathRef.current) {
+		  return;
+		}else if(buildingValue>0 && model.getSourcePort().getName()==="out" && targetPortName==="in-2"){
+			
+			const animationSpeed = (solarValue - buildingValue) < 0 ? 0.8 : 0.2;	
+			percentRef.current -= animationSpeed	 ; 
+			if (percentRef.current < 0) {
+			percentRef.current = 100;
 			}
-
-			this.percent += 0.5;
-			if (this.percent > 100) {
-				this.percent = 0;
+			
+		}
+		else{
+			percentRef.current += 0.5;
+			if (percentRef.current > 100) {
+			percentRef.current = 0;
 			}
+		}
 
-			let point = this.path.getPointAtLength(this.path.getTotalLength() * (this.percent / 100.0));
-
-			this.circle.setAttribute('cx', '' + point.x);
-			this.circle.setAttribute('cy', '' + point.y);
-
-			if (this.mounted) {
-				requestAnimationFrame(this.callback);
-			}
+		const point = pathRef.current.getPointAtLength(pathRef.current.getTotalLength() * (percentRef.current / 100.0));
+	
+		circleRef.current.setAttribute('cx', '' + (point.x));
+		circleRef.current.setAttribute('cy', '' + (point.y));
+	
+		animationFrameIdRef.current = requestAnimationFrame(animate);
+	  };
+	
+	  React.useEffect(() => {
+		animate();
+		return () => {
+		  cancelAnimationFrame(animationFrameIdRef.current);
 		};
-		requestAnimationFrame(this.callback);
-	}
-
-	componentWillUnmount() {
-		this.mounted = false;
-	}
-
-	render() {
-		return (
-			<>
-				<path
-					fill="none"
-					ref={(ref) => {
-						this.path = ref;
-					}}
-					strokeWidth={2}
-					stroke="rgba(0,0,0)"
-                    // color='black'
-                    // className=' border border-black'
-					d={this.props.path}
-				/>
-				<circle
-					ref={(ref) => {
-						this.circle = ref;
-					}}
-					r={4}
-					fill=" black"
-                    
-				/>
-			</>
-		);
-	}
-}
+	  },[buildingValue,animate] );
+	
+	  React.useEffect(() => {
+		if (pathRef.current) {
+		  const initialPoint = pathRef.current.getPointAtLength(0);
+		  circleRef.current.setAttribute('cx', '' + initialPoint.x);
+		  circleRef.current.setAttribute('cy', '' + initialPoint.y);
+		  circleRef.current.setAttribute('r', radius);
+		}
+	  },[radius]);
+  
+	return (
+	  <>
+		<path
+		  fill="none"
+		  ref={(ref) => {
+			pathRef.current = ref;
+		  }}
+		  strokeWidth={strokeWidth}
+		  stroke="rgba(0,0,0)"
+		  d={path}
+		/>
+		<circle
+		  ref={(ref) => {
+			circleRef.current = ref;
+		  }}
+		//   r= {radius}
+		  fill="black"
+		/>
+	  </>
+	);
+  };
 
 export class AdvancedLinkFactory extends DefaultLinkFactory {
 	constructor() {

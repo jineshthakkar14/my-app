@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Application } from '../Application';
 import { BodyWidget } from '../componets/Drag and Drop/BodyWidget';
+import { useSelector } from 'react-redux';
+import { RootState } from '..';
 
 
 export interface BodyWidgetProps1 {
@@ -8,18 +10,17 @@ export interface BodyWidgetProps1 {
 }
 
 
-export class DiagramPage extends React.Component<any,BodyWidgetProps1> {
-  
-      render(){
+export const DiagramPage = () =>  {
 
-        let appilcation = new Application()
-        return (
-          <div className=' ' >
-              <div className='h-[100vh]'>
-                <BodyWidget app={appilcation} />
-              </div>
-          </div>
-        )
-      }
+  let appilcation = new Application()
+
+  const value = useSelector((state:RootState)=>state.solar.solarEnergy)
+  return (
+    <div className=' ' >
+        <div className='h-[100vh]'>
+          <BodyWidget app={appilcation} value={value} />
+        </div>
+    </div>
+  )
   
 }

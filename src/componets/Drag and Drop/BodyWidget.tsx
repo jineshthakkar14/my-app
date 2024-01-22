@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { TrayWidget } from "./TragWidget";
 import { Application } from "../../Application";
 import { TrayItemWidget } from "./TragItemWidget";
-import { DiagramModel } from "@projectstorm/react-diagrams";
+import { DiagramModel, PortModelAlignment } from "@projectstorm/react-diagrams";
 import {  CanvasWidget } from "@projectstorm/react-canvas-core";
 import { action } from "@storybook/addon-actions";
 
@@ -11,12 +11,17 @@ import styled from "@emotion/styled";
 import { DemoCanvasWidget } from "./DemoCanvasWidget";
 import { DemoButton, DemoWorkspaceWidget } from "./DemoWorkspaceWIdget";
 
-import { AdvancedLinkModel, AdvancedPortModel, BatteryPortModel, BuildingPortModel, GridPortModel, SolarPortModel } from "../../pages/Animation";
+import { BatteryPortModel, BuildingPortModel, GridPortModel, SolarPortModel } from "../../pages/Animation";
 
 import { CustomNodeModel } from "../model/CustomNodeModel";
+import { RootState } from "../..";
+import { connect } from "react-redux";
+import { CustomPortModel } from "../model/CustomPortModel";
 
 export interface BodyWidgetProps {
   app: Application;
+  value?: number;
+  loading?:boolean
 }
 
 namespace S {
@@ -53,7 +58,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
   render() {
 
     var model2 = new DiagramModel();
-
     return (
       <S.Body>
         <S.Header className=" overflow-auto">
@@ -94,7 +98,8 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
               var node: CustomNodeModel = null;
 
-              const port6 =  new SolarPortModel(false,"in-1")
+              const x = this.props.app.getActiveDiagram().getLinks();
+              
 
               if (data.type === "building") {
                 node = new CustomNodeModel(
@@ -102,28 +107,14 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   data.type
                 );
                 node.addPort(new BuildingPortModel(false, "out"));
-                var point = this.props.app
-                  .getDiagramEngine()
-                  .getRelativeMousePoint(event);
-                node.setPosition(point);
-                this.props.app.getDiagramEngine().getModel().addNode(node);
-                this.forceUpdate();
               }
               if (data.type === "solarPanel") {
+                
                 node = new CustomNodeModel(
                   "Node1 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new SolarPortModel(true,"in-1"));
-                var point = this.props.app
-                  .getDiagramEngine()
-                  .getRelativeMousePoint(event);
-                node.setPosition(point);
-                var link = new AdvancedLinkModel();
-                this.props.app.getDiagramEngine().getModel().addNode(node);
-                // link.setSourcePort(port1)
-
-                this.forceUpdate();
+                node.addPort(new SolarPortModel(true, "in-1")); 
               }
               if (data.type === "grid") {
                 node = new CustomNodeModel(
@@ -131,14 +122,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   data.type
                 );
                 node.addPort(new GridPortModel(false, "in-2"));
-                var point = this.props.app
-                  .getDiagramEngine()
-                  .getRelativeMousePoint(event);
-                node.setPosition(point);
-                // link.setTargetPort(port2)
-
-                this.props.app.getDiagramEngine().getModel().addNode(node);
-                this.forceUpdate();
               }
               if (data.type === "battery") {
                 node = new CustomNodeModel(
@@ -146,15 +129,14 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   data.type
                 );
                 node.addPort(new BatteryPortModel(false, "in-3"));
-                var point = this.props.app
+              }
+
+              var point = this.props.app
                   .getDiagramEngine()
                   .getRelativeMousePoint(event);
                 node.setPosition(point);
                 this.props.app.getDiagramEngine().getModel().addNode(node);
                 this.forceUpdate();
-              }
-
-              this.forceUpdate();
             }}
             onDragOver={(event) => {
               event.preventDefault();
@@ -168,8 +150,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                     const newModel = this.props.app
                       .getDiagramEngine()
                       .getModel();
-
-                    var str = JSON.stringify(newModel.serialize());
 					          const data = newModel.serialize()
 
                     // Convert JSON data to a string
@@ -195,8 +175,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
                     // Remove the link from the document
                     document.body.removeChild(link);
-
-                    // console.log(JSON.parse(str))
 
                   }}
                 >
