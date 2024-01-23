@@ -55,7 +55,7 @@ export const DemoWorkspaceWidget : React.FC<React.PropsWithChildren<DemoWorkspac
 		formState: { errors },
 	  } = useForm({
 		defaultValues: {
-			solarValue: 10,
+			solarValue: 0,
 			buildingValue: 10
 		},
 		shouldUnregister:true

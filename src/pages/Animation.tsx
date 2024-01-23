@@ -68,11 +68,15 @@ export class SolarPortModel extends AdvancedPortModel {
 	  const targetPortName = targetPort ? targetPort.getName() : null;
 
 	  React.useEffect(() => {
-		
+		// solarPort="in-1"
+		// buildingPort="out"
+		// gridPort="in-2"
+		// batteryPort="in-3"
+		debugger
 		if((solarValue - buildingValue) > 0 && (model.getSourcePort().getName()==="out" || model.getSourcePort().getName()==="in-2")){
 			setRadius(0)
 			setStrokeWidth(2)
-		}else if(solarValue===0 && model.getSourcePort().getName()==="in-1"){
+		}else if(solarValue==0 && model.getSourcePort().getName()==="in-1"){
 			setRadius(0)
 			setStrokeWidth(2)
 		}else{
