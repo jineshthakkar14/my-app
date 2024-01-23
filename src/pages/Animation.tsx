@@ -48,7 +48,7 @@ export class SolarPortModel extends AdvancedPortModel {
 
   export class BuildingPortModel extends AdvancedPortModel {
 	canLinkToPort(port: DefaultPortModel): boolean {
-		return port instanceof GridPortModel;
+		return port instanceof GridPortModel || port instanceof BatteryPortModel;
 	}
   }
   
