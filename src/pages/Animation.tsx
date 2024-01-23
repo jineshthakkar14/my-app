@@ -72,7 +72,7 @@ export class SolarPortModel extends AdvancedPortModel {
 		// buildingPort="out"
 		// gridPort="in-2"
 		// batteryPort="in-3"
-		debugger
+		
 		if((solarValue - buildingValue) > 0 && (model.getSourcePort().getName()==="out" || model.getSourcePort().getName()==="in-2")){
 			setRadius(0)
 			setStrokeWidth(2)

@@ -48,7 +48,7 @@ export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
 
   const loading = useSelector((state:RootState) => state.solar.loading);
 
-  debugger
+  
 
 	const solarValue = useSelector((state:RootState) => state.solar.solarEnergy);
 	const buildingValue = useSelector((state:RootState) => state.solar.buildingEnergy);
