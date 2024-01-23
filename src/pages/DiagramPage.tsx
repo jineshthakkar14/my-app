@@ -19,6 +19,7 @@ export const DiagramPage = () =>  {
     <div className=' ' >
         <div className='h-[100vh]'>
           <BodyWidget app={appilcation} value={value} />
+          <div className=' text-red-300 mt-[500px] ml-[600px]'>duhudi</div>
         </div>
     </div>
   )

@@ -27,15 +27,15 @@ export interface CustomNodeWidgetProps {
 
 namespace S {
   export const Port = styled.div`
-    width: 16px;
-    height: 16px;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.5);
+    width: 220px;
+    height: 190px;
+    z-index: 50;
+    // background: rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     cursor: pointer;
 
     &:hover {
-      background: rgba(0, 0, 0, 1);
+      // background: rgba(0, 0, 0, 1);
     }
   `;
 }
@@ -46,36 +46,7 @@ namespace S {
 
 export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
 
-  const dispatch = useDispatch()
-  const [randomValue, setRandomValue] = React.useState<number>(0);
-
-  const [randomValue1, setRandomValue1] = React.useState<number>(0);
   const loading = useSelector((state:RootState) => state.solar.loading);
-
-  React.useEffect(() => {  
-    const intervalId = setInterval(() => {
-      
-      const newValue1 = Math.floor(Math.random() * 21);
-
-      setRandomValue(newValue1);
-      
-      dispatch(setSolarEnergy(newValue1));
-      
-    }, 15000);
-    return () => clearInterval(intervalId); 
-  }, [dispatch]);
-
-  React.useEffect(() => {
-    const intervalId1 = setInterval(() => {
-      const newValue2 = Math.floor(Math.random() * 21);
-
-      setRandomValue1(newValue2);
-      
-      dispatch(setBuildingEnergy(newValue2));
-    }, 15000);
-
-    return () => clearInterval(intervalId1);
-  }, [dispatch]);
 
 	const solarValue = useSelector((state:RootState) => state.solar.solarEnergy);
 	const buildingValue = useSelector((state:RootState) => state.solar.buildingEnergy);
@@ -99,8 +70,8 @@ export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
   const getPosition =()=>{
     if(props.type==="building"){
 			return {
-        top: props.size + 25,
-        right: -8,
+        top: -9,
+        right: -9,
         position: "absolute",
       }
 		}
@@ -137,10 +108,9 @@ export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
         }}
       >
         <div
-          className="relative border-[1px] border-black z-10 p-2 w-fit h-fit bg-slate-50">
-          <div className=" text-black "></div>
+          className="relative border-[1px] border-black z-10 p-2 w-fit h-fit bg-slate-50  ">
           {props.type === "solarPanel" && (
-            <div>
+            <div className="-z-20">
               {solarValue}
               <img
                 src={solar}
@@ -152,14 +122,12 @@ export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
           {props.type === "building" && (
             <div>
                {
-                loading?(<div>
-                  <div>Loading...</div>
-                </div>):(<div>{buildingValue}</div>)
+                (<div>{buildingValue}</div>)
               }
               <img
                 src={buliding}
                 alt="udshj"
-                className="pointer-events-none z-20"
+                className="pointer-events-none "
               ></img>
             </div>
           )}
@@ -179,10 +147,12 @@ export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
           )}
         </div>
 
-        {/* {buliding} */}
         <PortWidget
-          style={getPosition()}
-          // className="z-30"
+          style={{
+            top: -9,
+            right: -9,
+            position: "absolute",
+          }}
           port={getPortName(props.type,props.node)}
           engine={props.engine}
         >

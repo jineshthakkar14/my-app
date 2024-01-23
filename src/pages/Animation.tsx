@@ -2,7 +2,10 @@ import {
 	
 	DefaultPortModel,
 	DefaultLinkFactory,
-	DefaultLinkModel
+	DefaultLinkModel,
+	AbstractModelFactory,
+	RightAngleLinkModel,
+	LinkModel,
 } from '@projectstorm/react-diagrams';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +48,7 @@ export class SolarPortModel extends AdvancedPortModel {
 
   export class BuildingPortModel extends AdvancedPortModel {
 	canLinkToPort(port: DefaultPortModel): boolean {
-		return port instanceof GridPortModel || port instanceof BatteryPortModel;
+		return port instanceof GridPortModel;
 	}
   }
   
@@ -55,17 +58,18 @@ export class SolarPortModel extends AdvancedPortModel {
 	const circleRef = React.useRef(null);
 	const percentRef = React.useRef(0);
 	const animationFrameIdRef = React.useRef(null);
-	const dispatch  = useDispatch()
   
 	const solarValue = useSelector((state:RootState) => state.solar.solarEnergy);
 	const buildingValue = useSelector((state:RootState) => state.solar.buildingEnergy);
 	const [radius, setRadius] = React.useState(0)
 	const [strokeWidth, setStrokeWidth] = React.useState(0)
 
+	  const targetPort = model.getTargetPort();
+	  const targetPortName = targetPort ? targetPort.getName() : null;
 
 	  React.useEffect(() => {
-
-		if((solarValue - buildingValue) > 0 && model.getSourcePort().getName()==="out"){
+		
+		if((solarValue - buildingValue) > 0 && (model.getSourcePort().getName()==="out" || model.getSourcePort().getName()==="in-2")){
 			setRadius(0)
 			setStrokeWidth(2)
 		}else if(solarValue===0 && model.getSourcePort().getName()==="in-1"){
@@ -77,17 +81,15 @@ export class SolarPortModel extends AdvancedPortModel {
 		}
 	  }, [solarValue, buildingValue, model.getSourcePort().getName()]);
 
-	  const targetPort = model.getTargetPort();
-	  const targetPortName = targetPort ? targetPort.getName() : null;
+	  
 	 
 	
 	const animate = () => {
 		if (!circleRef.current || !pathRef.current) {
 		  return;
-		}else if(buildingValue>0 && model.getSourcePort().getName()==="out" && targetPortName==="in-2"){
+		}else if(((model.getSourcePort().getName()==="out" && targetPortName==="in-2"))){
 			
-			const animationSpeed = (solarValue - buildingValue) < 0 ? 0.8 : 0.2;	
-			percentRef.current -= animationSpeed	 ; 
+			percentRef.current -= 0.5	 ; 
 			if (percentRef.current < 0) {
 			percentRef.current = 100;
 			}

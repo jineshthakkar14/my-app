@@ -9,8 +9,8 @@ export interface NavDrawerInitialState {
   
   const initialState: NavDrawerInitialState = {
     loading: false,
-    solarEnergy: localStorage.getItem("posX") ? JSON.parse(localStorage.getItem("posX")) : 0,
-    buildingEnergy: localStorage.getItem("posY") ? JSON.parse(localStorage.getItem("posY")) : 0,
+    solarEnergy: 10,
+    buildingEnergy: 10,
   };
 
 

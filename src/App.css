@@ -1,3 +1,8 @@
+html,
+body {
+  overflow: hidden;
+}
+
 
 .button-24 {
   background: #FF4742;

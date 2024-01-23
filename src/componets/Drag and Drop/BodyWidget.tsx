@@ -87,7 +87,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
             />
           </TrayWidget>
           <S.Layer
-            className="mx-auto bg-slate-600"
+            className="mx-auto  "
             onDrop={(event) => {
               var data = JSON.parse(
                 event.dataTransfer.getData("storm-diagram-node")
@@ -184,6 +184,15 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
             >
               {/* <div> */}
               <DemoCanvasWidget>
+                {/* <div className=" h-[100px] ">
+                  <label className='w-full'>
+                      <p className='text-[0.875rem] text-black mb-1 leading-[1.375rem]'>
+                          Email Address
+                          <sup className='text-pink-200'>*</sup>
+                      </p>
+                      <input type='email' required placeholder='Enter your Email' name='email' className='bg-black rounded-[0.75rem] w-full p-[12px] text-white'></input>
+                  </label>
+                </div> */}
                 <CanvasWidget engine={this.props.app.getDiagramEngine()} />
               </DemoCanvasWidget>
               {/* </div> */}
