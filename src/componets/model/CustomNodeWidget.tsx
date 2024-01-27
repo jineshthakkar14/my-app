@@ -2,7 +2,6 @@ import * as React from "react";
 import { CustomNodeModel } from "./CustomNodeModel";
 import {
   DiagramEngine,
-  PortModelAlignment,
   PortWidget,
 } from "@projectstorm/react-diagrams";
 import styled from "@emotion/styled";
@@ -11,11 +10,8 @@ import solar from "../../assets/images/solarpanel.jpeg";
 import grid from "../../assets/images/Img1.jpeg";
 import battery from "../../assets/images/Img2.jpeg";
 
-import axios from "axios";
-import { apis } from "../../services/apis";
 import { CustomType } from "./CustomType";
-import { useDispatch, useSelector } from "react-redux";
-import { setBuildingEnergy, setLoading, setSolarEnergy } from "../../slices/solarSlice";
+import { useSelector } from "react-redux";
 import { RootState } from "../..";
 
 export interface CustomNodeWidgetProps {
@@ -45,9 +41,6 @@ namespace S {
  */
 
 export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
-
-  const loading = useSelector((state:RootState) => state.solar.loading);
-
   
 
 	const solarValue = useSelector((state:RootState) => state.solar.solarEnergy);
@@ -55,51 +48,19 @@ export const CustomNodeWidget: React.FC<CustomNodeWidgetProps> = (props) => {
 
     const getPortName = (type:CustomType,node:CustomNodeModel) => {
 		if(type==="building"){
-			return node.getPort("out")
+			return node.getPort("building")
 		}
 		if(type==="solarPanel"){
-			return node.getPort("in-1") || node.getPort(PortModelAlignment.BOTTOM)
+			return node.getPort("solarPanel")
 		}
 		if(type==="battery"){
-			return node.getPort("in-3")
+			return node.getPort("battery")
 		}
 		if(type==="grid"){
-			return node.getPort("in-2")
+			return node.getPort("grid")
 		}
 
 	};
-
-  const getPosition =()=>{
-    if(props.type==="building"){
-			return {
-        top: -9,
-        right: -9,
-        position: "absolute",
-      }
-		}
-		if(props.type==="solarPanel"){
-			return {
-        top: props.size-50,
-        right: -8,
-        position: 'absolute'
-      }
-		}
-		if(props.type==="grid"){
-			return {
-        top: props.size ,
-        left: -10,
-        position: 'absolute'
-      }
-		}
-		if(props.type==="battery"){
-			return {
-        bottom: props.size-40 ,
-        left: -8,
-        position: 'absolute',
-        
-      }
-		}
-  }
 
     return (
       <div

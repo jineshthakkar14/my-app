@@ -15,11 +15,12 @@ export const DiagramPage = () =>  {
   let appilcation = new Application()
 
   const value = useSelector((state:RootState)=>state.solar.solarEnergy)
+  const model = useSelector((state:RootState)=>state.solar.model)
+
   return (
     <div className=' ' >
         <div className='h-[100vh]'>
-          <BodyWidget app={appilcation} value={value} />
-          <div className=' text-red-300 mt-[500px] ml-[600px]'>duhudi</div>
+          <BodyWidget app={appilcation} value={value} model={model}></BodyWidget>    
         </div>
     </div>
   )

@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 export interface NavDrawerInitialState {
-    loading: boolean;
+    model: any;
     solarEnergy:number,
     buildingEnergy:number
   }
   
   const initialState: NavDrawerInitialState = {
-    loading: false,
+    model: false,
     solarEnergy: 10,
     buildingEnergy: 10,
   };
@@ -18,8 +18,8 @@ const solarSlice = createSlice({
   name: "solar",
   initialState: initialState,
   reducers: {
-    setLoading(state, value) {
-      state.loading = value.payload;
+    setModel(state, value) {
+      state.model = value.payload;
     },
     
     setSolarEnergy(state, value) {
@@ -31,6 +31,6 @@ const solarSlice = createSlice({
   },
 });
 
-export const {setLoading, setSolarEnergy ,setBuildingEnergy } = solarSlice.actions;
+export const {setModel, setSolarEnergy ,setBuildingEnergy } = solarSlice.actions;
 
 export default solarSlice.reducer;

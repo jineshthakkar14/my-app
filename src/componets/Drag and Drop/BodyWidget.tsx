@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { TrayWidget } from "./TragWidget";
 import { Application } from "../../Application";
 import { TrayItemWidget } from "./TragItemWidget";
-import { DiagramModel, PortModelAlignment } from "@projectstorm/react-diagrams";
+import { DiagramModel } from "@projectstorm/react-diagrams";
 import {  CanvasWidget } from "@projectstorm/react-canvas-core";
 import { action } from "@storybook/addon-actions";
 
@@ -14,14 +14,13 @@ import { DemoButton, DemoWorkspaceWidget } from "./DemoWorkspaceWIdget";
 import { BatteryPortModel, BuildingPortModel, GridPortModel, SolarPortModel } from "../../pages/Animation";
 
 import { CustomNodeModel } from "../model/CustomNodeModel";
-import { RootState } from "../..";
-import { connect } from "react-redux";
-import { CustomPortModel } from "../model/CustomPortModel";
+import { DefaultState } from "../New Link/DefaultState";
 
 export interface BodyWidgetProps {
   app: Application;
   value?: number;
   loading?:boolean
+  model?:any
 }
 
 namespace S {
@@ -97,16 +96,13 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
               ).length;
 
               var node: CustomNodeModel = null;
-
-              const x = this.props.app.getActiveDiagram().getLinks();
               
-
               if (data.type === "building") {
                 node = new CustomNodeModel(
                   "Node " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new BuildingPortModel(false, "out"));
+                node.addPort(new BuildingPortModel(false, "building"));
               }
               if (data.type === "solarPanel") {
                 
@@ -114,21 +110,21 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                   "Node1 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new SolarPortModel(true, "in-1")); 
+                node.addPort(new SolarPortModel(true, "solarPanel")); 
               }
               if (data.type === "grid") {
                 node = new CustomNodeModel(
                   "Node2 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new GridPortModel(false, "in-2"));
+                node.addPort(new GridPortModel(false, "grid"));
               }
               if (data.type === "battery") {
                 node = new CustomNodeModel(
                   "Node2 " + (nodesCount + 1),
                   data.type
                 );
-                node.addPort(new BatteryPortModel(false, "in-3"));
+                node.addPort(new BatteryPortModel(false, "battery"));
               }
 
               var point = this.props.app
@@ -137,6 +133,9 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
                 node.setPosition(point);
                 this.props.app.getDiagramEngine().getModel().addNode(node);
                 this.forceUpdate();
+
+                this.props.app.getDiagramEngine().getStateMachine().pushState(new DefaultState())
+                this.forceUpdate();
             }}
             onDragOver={(event) => {
               event.preventDefault();
@@ -144,7 +143,8 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
           >
             <DemoWorkspaceWidget
               buttons={
-                <DemoButton
+                <div>
+                  <DemoButton
                   onClick={() => {
                     action("Serialized Graph")(model2.serialize());
                     const newModel = this.props.app
@@ -175,24 +175,29 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
                     // Remove the link from the document
                     document.body.removeChild(link);
-
                   }}
                 >
                   Download State
-                </DemoButton>
+                  </DemoButton>
+                  <DemoButton
+                  onClick={() => {
+
+                    this.props.app.getActiveDiagram().getLinks().map((link)=>{
+                      link.remove()
+                    })
+
+                    // this.props.model.getLastPoint().getLink().remove()
+                    this.forceUpdate()
+
+                  }}
+                >
+                  Remove All Link
+                  </DemoButton>
+                </div>
               }
             >
               {/* <div> */}
               <DemoCanvasWidget>
-                {/* <div className=" h-[100px] ">
-                  <label className='w-full'>
-                      <p className='text-[0.875rem] text-black mb-1 leading-[1.375rem]'>
-                          Email Address
-                          <sup className='text-pink-200'>*</sup>
-                      </p>
-                      <input type='email' required placeholder='Enter your Email' name='email' className='bg-black rounded-[0.75rem] w-full p-[12px] text-white'></input>
-                  </label>
-                </div> */}
                 <CanvasWidget engine={this.props.app.getDiagramEngine()} />
               </DemoCanvasWidget>
               {/* </div> */}

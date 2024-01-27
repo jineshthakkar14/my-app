@@ -55,7 +55,7 @@ export const DemoWorkspaceWidget : React.FC<React.PropsWithChildren<DemoWorkspac
 		formState: { errors },
 	  } = useForm({
 		defaultValues: {
-			solarValue: 0,
+			solarValue: 10,
 			buildingValue: 10
 		},
 		shouldUnregister:true
@@ -70,7 +70,6 @@ export const DemoWorkspaceWidget : React.FC<React.PropsWithChildren<DemoWorkspac
 	return (
 		<S.Container>
 			<S.Toolbar>{props.buttons}</S.Toolbar>
-			
 				<div className='bg-white flex justify-center items-center gap-[100px] p-5'>
 					<form onSubmit={handleSubmit(submitHandler)}>
 						<div className='flex flex-col gap-5'>

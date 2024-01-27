@@ -1,6 +1,5 @@
 import { CustomNodeWidget } from './CustomNodeWidget';
 import { CustomNodeModel } from './CustomNodeModel';
-import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { CustomType } from './CustomType';

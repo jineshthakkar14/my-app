@@ -65,24 +65,6 @@ export class Application extends Component {
     this.activeModel = getActiveModel();
 
     this.diagramEngine = getDiagramEngine();  
-
-    const reverseConnections = () => {
-      const links = this.activeModel.getLinks();
-      links.forEach((link) => {
-        const currentSourcePort = link.getSourcePort();
-        const currentTargetPort = link.getTargetPort();
-  
-        // Swap the source and target ports
-        link.setSourcePort(currentTargetPort);
-        link.setTargetPort(currentSourcePort);
-      });
-    };
-
-    const actualRandomValue = randomValue !== undefined ? randomValue : 0;
-
-    if(actualRandomValue>0){
-      // reverseConnections();
-    }
  
     this.diagramEngine.setModel(this.activeModel);
 
